@@ -1,38 +1,61 @@
 # Thwip
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/thwip`. To experiment with that code, run `bin/console` for an interactive prompt.
+This gem wraps the Marvel Comics API (https://developer.marvel.com/documentation/getting_started) to pull data about individual issues, series, publication, creators, and events (eventually, at least :) )
 
-TODO: Delete this and the text above, and describe your gem
+## Dependencies
+
+Before using, install ruby 2.6.6 and Bundler ~> 2.1.4
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'thwip'
+Clone this repo to your machine:
+```
+$ git clone https://github.com/alanahanson/thwip.git
 ```
 
-And then execute:
+Make sure to add your environment variables (BASE_URL, PRIVATE_KEY, PUBLIC_KEY) to your .env file.
 
-    $ bundle
+Navigate into the repo:
+```
+$ cd thwip
+```
+And enter:
 
-Or install it yourself as:
+```
+$ gem build THWIP.gemspec
+$ gem install thwip-0.1.0.gem
+```
 
-    $ gem install thwip
+Then execute:
+```
+$ bundle
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+So far there is only one method to call: `get_events`.
 
-## Development
+Example:
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```ruby
+require 'thwip'
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Thwip.get_events
+```
+
+You will get a list of Event objects which have methods to show lists of characters, issues, and series related to the event in question.
+
+## Testing
+
+To run test suite, enter: 
+
+```
+rake spec
+```
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/thwip. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/alanahanson/thwip. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License

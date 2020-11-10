@@ -1,36 +1,21 @@
-require 'net/http'
-
-
-PRIVATE_KEY = ENV['MARVEL_PRIVATE_KEY']
-PUBLIC_KEY = ENV['MARVEL_PUBLIC_KEY']
-BASE_URL           = "https://gateway.marvel.com:443/v1/public/characters"
-TIMESTAMP          = Time.now.to_i.to_s
-URL_HASH           = Digest::MD5.hexdigest("#{TIMESTAMP}#{PRIVATE_KEY}#{PUBLIC_KEY}")
-DEFAULT_PARAMS     = "apikey=#{PUBLIC_KEY}&ts=#{TIMESTAMP}&hash=#{URL_HASH}"
-
-# p BASE_URL + '?' + DEFAULT_PARAMS
-
-uri = URI('http://example.com/index.html')
-params = { :limit => 10, :page => 3 }
-uri.query = URI.encode_www_form(params)
-
-res = Net::HTTP.get_response(uri)
-puts res.body if res.is_a?(Net::HTTPSuccess)
+require 'digest'
+require 'httparty'
+require 'json'
+require 'thwip/event'
 
 
 class Client
-  BASE_URL = "https://gateway.marvel.com:443/v1/public/"
   def initialize
-
+    ts = Time.now.to_i.to_s
+    md5 = Digest::MD5.hexdigest("#{ts}#{ENV['PRIVATE_KEY']}#{ENV['PUBLIC_KEY']}")
+    @default_params = "?apikey=#{ENV['PUBLIC_KEY']}&ts=#{ts}&hash=#{md5}"
   end
 
-  def get_issue(id)
-    # res = api_response
-    Issue.new(res)
+  def events(options={})
+    url = "#{ENV['BASE_URL']}/events#{@default_params}"
+    response = HTTParty.get(url)
+    events = JSON.parse(response.body).fetch('data').fetch('results')
+    events.map { |e| Event.new(e) }
   end
 
-  def get_series(id)
-    # res = api_response
-    Series.new(res)
-  end
 end

@@ -1,5 +1,10 @@
-require "thwip/version"
+require 'dotenv/load'
+
+require 'thwip/version'
+require 'thwip/client'
 
 module Thwip
-  # Your code goes here...
+	def self.get_events
+		Client.new.events
+	end
 end
